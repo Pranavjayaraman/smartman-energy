@@ -32,7 +32,6 @@ export default function LoginModal() {
       title: 'System Administrator',
       titleTa: 'கணினி நிர்வாகி',
       user: 'admin',
-      pass: 'admin123',
       role: 'Admin',
       icon: ShieldCheck,
       color: 'from-rose-600 to-red-600',
@@ -43,7 +42,6 @@ export default function LoginModal() {
       title: 'Water Intake Operator',
       titleTa: 'நீர் உட்கொள்ளல் ஆபரேட்டர்',
       user: 'op_intake',
-      pass: 'intake123',
       role: 'Operator',
       icon: Droplet,
       color: 'from-cyan-600 to-blue-600',
@@ -54,7 +52,6 @@ export default function LoginModal() {
       title: 'Process Water Operator',
       titleTa: 'செயல்முறை நீர் ஆபரேட்டர்',
       user: 'op_process',
-      pass: 'process123',
       role: 'Operator',
       icon: Factory,
       color: 'from-blue-600 to-indigo-600',
@@ -65,7 +62,6 @@ export default function LoginModal() {
       title: 'Domestic & Garden Operator',
       titleTa: 'உள்நாட்டு & தோட்ட ஆபரேட்டர்',
       user: 'op_dom_gard',
-      pass: 'domestic123',
       role: 'Operator',
       icon: Home,
       color: 'from-emerald-600 to-teal-600',
@@ -76,7 +72,6 @@ export default function LoginModal() {
       title: 'STP & ETP Plant Operator',
       titleTa: 'STP & ETP சுத்திகரிப்பு ஆபரேட்டர்',
       user: 'op_treatment',
-      pass: 'treatment123',
       role: 'Operator',
       icon: Zap,
       color: 'from-amber-600 to-orange-600',
@@ -87,7 +82,6 @@ export default function LoginModal() {
       title: 'Operations Manager',
       titleTa: 'ஆலை மேலாளர்',
       user: 'manager',
-      pass: 'viewer123',
       role: 'Viewer',
       icon: BarChart3,
       color: 'from-purple-600 to-pink-600',
@@ -97,7 +91,7 @@ export default function LoginModal() {
 
   const handleSelectQuickRole = (r) => {
     setUsername(r.user);
-    setPassword(r.pass);
+    setPassword(''); // Strictly require manual password entry for security
     setActiveRoleName(r.title);
     setErrorMsg('');
   };
@@ -236,9 +230,9 @@ export default function LoginModal() {
           <div className="pt-4 border-t border-slate-800/80 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-extrabold text-slate-300 uppercase tracking-wider">
-                {lang === 'ta' ? '⚡ 1-கிளிக் விரைவு உள்நுழைவு:' : '⚡ 1-Click Quick Select Role:'}
+                {lang === 'ta' ? '⚡ விரைவு பயனர் ஐடி தேர்வு:' : '⚡ Quick Select User ID:'}
               </span>
-              <span className="text-[10px] text-cyan-400 font-mono">Click to fill</span>
+              <span className="text-[10px] text-slate-400 font-mono">Select ID & enter password</span>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
