@@ -23,16 +23,23 @@ app.use(cors());
 app.use(express.json());
 app.use('/api', apiRateLimiter(400, 60 * 1000));
 
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/meters', meterRoutes);
-app.use('/api/readings', readingRoutes);
-app.use('/api/dashboard', dashboardRoutes);
-app.use('/api/export', exportRoutes);
-app.use('/api/audit', auditRoutes);
-app.use('/api/backup', backupRoutes);
+// Mount API Routes (Supports both /api/* and /* for Vercel serverless rewrites)
+const routes = [
+  ['/auth', authRoutes],
+  ['/meters', meterRoutes],
+  ['/readings', readingRoutes],
+  ['/dashboard', dashboardRoutes],
+  ['/export', exportRoutes],
+  ['/audit', auditRoutes],
+  ['/backup', backupRoutes],
+];
 
-app.get('/api/health', (req, res) => {
+routes.forEach(([prefix, router]) => {
+  app.use(`/api${prefix}`, router);
+  app.use(prefix, router);
+});
+
+app.get(['/api/health', '/health'], (req, res) => {
   res.json({ 
     status: 'OK', 
     system: 'AQ TRACK Backend API', 
@@ -141,8 +148,12 @@ app.get('/', (req, res) => {
   `);
 });
 
-// Friendly Fallback Handler for unknown routes (prevents Cannot GET errors)
+// Fallback Handler for unknown routes
 app.use((req, res) => {
+  if (req.originalUrl.startsWith('/api') || req.headers.accept?.includes('application/json')) {
+    return res.status(404).json({ error: `Route ${req.originalUrl} not found` });
+  }
+
   res.status(404).send(`
     <!DOCTYPE html>
     <html lang="en">
@@ -161,7 +172,7 @@ app.use((req, res) => {
       <div class="card">
         <h1>404 - Endpoint Not Found</h1>
         <p>The path <code>${req.originalUrl}</code> is not a valid API route on AQ TRACK backend server.</p>
-        <a href="http://localhost:3000">Return to AQ TRACK Application</a>
+        <a href="/">Return to AQ TRACK Application</a>
       </div>
     </body>
     </html>
