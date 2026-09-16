@@ -106,12 +106,13 @@ export const downloadExcelBlob = async (params = {}) => {
   return res.data;
 };
 
-export const exportExcelURL = (startDate, endDate, year) => {
+export const exportExcelURL = (startDate, endDate, year, area) => {
   const token = localStorage.getItem('token');
   const query = new URLSearchParams();
   if (startDate) query.append('startDate', startDate);
   if (endDate) query.append('endDate', endDate);
   if (year) query.append('year', year);
+  if (area && area !== 'all') query.append('area', area);
   if (token) query.append('token', token);
   return `${API_BASE}/export/excel?${query.toString()}`;
 };

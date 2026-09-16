@@ -147,7 +147,9 @@ function MainApp() {
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-6">
           {/* Dashboard is accessible for Admin and Viewer roles */}
-          {activeTab === 'dashboard' && (user?.role === 'Admin' || user?.role === 'Viewer') && <Dashboard />}
+          {activeTab === 'dashboard' && (user?.role === 'Admin' || user?.role === 'Viewer') && (
+            <Dashboard onOpenExport={() => setIsExportOpen(true)} />
+          )}
           
           {/* Area Entry is accessible for Operators & Admin to enter/check/update readings */}
           {activeTab === 'entry' && <AreaEntryForm initialDate={selectedEditDate} />}

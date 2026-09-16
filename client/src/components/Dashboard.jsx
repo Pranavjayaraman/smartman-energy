@@ -31,7 +31,9 @@ import {
 
 const CATEGORY_COLORS = ['#3b82f6', '#10b981', '#84cc16', '#a855f7'];
 
-export default function Dashboard() {
+import { FileSpreadsheet } from 'lucide-react';
+
+export default function Dashboard({ onOpenExport }) {
   const { t } = useLanguage();
   const [timeframe, setTimeframe] = useState('daily');
   const [loading, setLoading] = useState(true);
@@ -88,24 +90,37 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* Filter buttons */}
-        <div className="bg-slate-800 p-1.5 rounded-xl border border-slate-700 flex items-center space-x-1 text-xs">
-          <button
-            onClick={() => setTimeframe('daily')}
-            className={`px-4 py-2 rounded-lg font-bold transition-all cursor-pointer ${
-              timeframe === 'daily' ? 'bg-cyan-600 text-white shadow-md' : 'text-slate-300 hover:text-white'
-            }`}
-          >
-            {t('last30Days', 'All 2026 Records')}
-          </button>
-          <button
-            onClick={() => setTimeframe('monthly')}
-            className={`px-4 py-2 rounded-lg font-bold transition-all cursor-pointer ${
-              timeframe === 'monthly' ? 'bg-cyan-600 text-white shadow-md' : 'text-slate-300 hover:text-white'
-            }`}
-          >
-            {t('monthlySummary', 'Monthly Summary')}
-          </button>
+        {/* Filter buttons & Excel Export Trigger */}
+        <div className="flex flex-wrap items-center gap-2">
+          {onOpenExport && (
+            <button
+              onClick={onOpenExport}
+              className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold shadow-lg shadow-emerald-700/30 transition-all cursor-pointer hover:scale-[1.02]"
+              title="Export Full Excel Ledger or Area Worksheets"
+            >
+              <FileSpreadsheet className="w-4 h-4" />
+              <span>Export Excel</span>
+            </button>
+          )}
+
+          <div className="bg-slate-800 p-1 rounded-xl border border-slate-700 flex items-center space-x-1 text-xs">
+            <button
+              onClick={() => setTimeframe('daily')}
+              className={`px-3.5 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
+                timeframe === 'daily' ? 'bg-cyan-600 text-white shadow-md' : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              {t('last30Days', 'All 2026 Records')}
+            </button>
+            <button
+              onClick={() => setTimeframe('monthly')}
+              className={`px-3.5 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
+                timeframe === 'monthly' ? 'bg-cyan-600 text-white shadow-md' : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              {t('monthlySummary', 'Monthly Summary')}
+            </button>
+          </div>
         </div>
       </div>
 
