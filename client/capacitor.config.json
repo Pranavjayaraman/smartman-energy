@@ -1,0 +1,9 @@
+{
+  "appId": "com.aqtrack.watermonitoring",
+  "appName": "AQ TRACK",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  }
+}

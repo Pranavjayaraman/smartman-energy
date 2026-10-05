@@ -1,11 +1,11 @@
 const express = require('express');
-const { allAsync, runAsync, getAsync, withTransaction } = require('../db');
+const { allAsync, runAsync, getAsync, withTransaction, dbProcedures } = require('../db');
 const { authenticateToken } = require('../middleware/auth');
 const { logSecurityEvent } = require('../middleware/security');
 
 const router = express.Router();
 
-// GET readings & targets for a specific date and area
+// GET readings & targets for a specific date and area (evaluated 100% in SQL)
 router.get('/', authenticateToken, async (req, res) => {
   try {
     const { date, area } = req.query;
@@ -22,92 +22,14 @@ router.get('/', authenticateToken, async (req, res) => {
       effectiveArea = user.assigned_areas && user.assigned_areas.length > 0 ? user.assigned_areas[0] : null;
     }
 
-    // 2. Fetch Production & Targets for the date
-    let target = await getAsync('SELECT * FROM daily_production_targets WHERE date = ?', [date]);
-    if (!target) {
-      target = {
-        date,
-        production_mt: 0,
-        manpower: 0,
-        garden_area_m2: 2500,
-        intake_target_kl: 500,
-        domestic_target_kl: 60,
-        specific_total_target: 3.2,
-        specific_process_target: 2.5,
-        domestic_lpd_target: 135,
-        garden_lpd_target: 5.0
-      };
-    }
-
-    // 3. Fetch Meters strictly filtered by assigned effectiveArea for Operators
-    let meterSql = 'SELECT * FROM meters WHERE is_active = 1';
-    const meterParams = [];
-    if (effectiveArea) {
-      meterSql += ' AND area = ?';
-      meterParams.push(effectiveArea);
-    }
-    meterSql += ' ORDER BY category, display_order, code';
-    const activeMeters = await allAsync(meterSql, meterParams);
-
-    // 4. Fetch Existing Meter Readings for date
-    const existingReadings = await allAsync(
-      'SELECT * FROM meter_readings WHERE date = ?',
-      [date]
-    );
-    const readingsMap = {};
-    existingReadings.forEach(r => {
-      readingsMap[r.meter_code] = r.value;
-    });
-
-    // 5. Fetch STP & ETP Readings for date (filtered by plant_type matching effectiveArea if Operator)
-    let stpEtpSql = 'SELECT * FROM stp_etp_readings WHERE date = ?';
-    const stpEtpParams = [date];
-    if (user.role === 'Operator') {
-      if (effectiveArea === 'STP') {
-        stpEtpSql += ' AND plant_type = "STP"';
-      } else if (effectiveArea === 'ETP') {
-        stpEtpSql += ' AND plant_type = "ETP"';
-      } else {
-        stpEtpSql += ' AND plant_type = "NONE"'; // Hide STP/ETP from intake/process/domestic operators
-      }
-    }
-    const stpEtpRows = await allAsync(stpEtpSql, stpEtpParams);
-    const stpEtpMap = {};
-    stpEtpRows.forEach(r => {
-      stpEtpMap[`${r.plant_type}_${r.field_code}`] = r.value;
-    });
-
-    // 6. Calculate 7-day averages per meter
-    const sevenDaysAgo = new Date(new Date(date).getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-    const avgRows = await allAsync(
-      `SELECT meter_code, AVG(value) as avg_val 
-       FROM meter_readings 
-       WHERE date >= ? AND date < ? 
-       GROUP BY meter_code`,
-      [sevenDaysAgo, date]
-    );
-    const averagesMap = {};
-    avgRows.forEach(row => {
-      averagesMap[row.meter_code] = row.avg_val;
-    });
-
-    res.json({
-      date,
-      assignedArea: effectiveArea,
-      target,
-      meters: activeMeters.map(m => ({
-        ...m,
-        current_value: readingsMap[m.code] !== undefined ? readingsMap[m.code] : '',
-        avg_7day: averagesMap[m.code] || 0
-      })),
-      readingsMap,
-      stpEtpMap
-    });
+    const data = await dbProcedures.getReadingsForDate({ date, effectiveArea, user });
+    res.json(data);
   } catch (err) {
-    console.error('Fetch readings error:', err);
+    console.error('Fetch readings SQL error:', err);
     res.status(500).json({ error: 'Failed to fetch readings' });
   }
 });
+
 
 // POST save / edit readings for a date (strictly scoped to assigned area)
 router.post('/', authenticateToken, async (req, res) => {

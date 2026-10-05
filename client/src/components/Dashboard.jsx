@@ -224,8 +224,8 @@ export default function Dashboard({ onOpenExport }) {
                   contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', color: '#fff' }}
                 />
                 <Legend wrapperStyle={{ fontSize: '12px' }} />
-                <Bar dataKey="intake_kl" name={t('intakeKl', 'Intake (KL)')} fill="#06b6d4" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="total_consumption_kl" name={t('totalConsKl', 'Total Used (KL)')} fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                <Bar isAnimationActive={false} dataKey="intake_kl" name={t('intakeKl', 'Intake (KL)')} fill="#06b6d4" radius={[4, 4, 0, 0]} />
+                <Bar isAnimationActive={false} dataKey="total_consumption_kl" name={t('totalConsKl', 'Total Used (KL)')} fill="#3b82f6" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -242,6 +242,7 @@ export default function Dashboard({ onOpenExport }) {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
+                  isAnimationActive={false}
                   data={categoryData}
                   cx="50%"
                   cy="50%"

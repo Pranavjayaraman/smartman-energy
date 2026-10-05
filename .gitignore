@@ -7,6 +7,11 @@ server/node_modules/
 dist/
 client/dist/
 build/
+client/android/app/build/
+client/android/.gradle/
+client/android/build/
+*.keystore
+*.jks
 
 # Environment Variables
 .env

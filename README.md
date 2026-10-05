@@ -109,6 +109,35 @@ Follow the interactive prompts (Accept defaults).
 
 ---
 
+## 📱 Step-by-Step Guide: Android App & Google Play Store
+
+The application is fully configured with **Capacitor** to build native Android packages (`.apk` and `.aab`).
+
+### 1. Build and Sync Web Assets
+```bash
+cd client
+npm run cap:build
+```
+
+### 2. Open Project in Android Studio
+```bash
+npm run cap:open
+```
+*(Or manually open the `client/android` folder in Android Studio).*
+
+### 3. Generate APK for Testing on Phone
+1. Connect your Android phone via USB (with **USB Debugging** enabled).
+2. In Android Studio, click the green **Run (▶)** button.
+3. Or go to **Build** → **Build Bundle(s) / APK(s)** → **Build APK(s)** to get a debug `.apk` to share with testers.
+
+### 4. Generate Signed Bundle (.aab) for Google Play Store
+1. In Android Studio, select **Build** → **Generate Signed Bundle / APK**.
+2. Choose **Android App Bundle (.aab)**.
+3. Create or select your release keystore.
+4. Upload the generated `.aab` file to your **Google Play Console** release track.
+
+---
+
 ## 🛡️ Security & Environment Variables (Optional)
 
 You can set these environment variables in your Vercel Dashboard or local `.env`:
@@ -116,5 +145,5 @@ You can set these environment variables in your Vercel Dashboard or local `.env`
 ```env
 PORT=5000
 JWT_SECRET=your_super_secret_jwt_key_2026
-VITE_API_URL=https://your-api-domain.com   # (Only needed if backend is hosted separately)
+VITE_API_URL=https://your-api-domain.com   # (Point mobile app to your live cloud server)
 ```
