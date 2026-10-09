@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { 
-  Droplet, 
+  Droplets, 
   LayoutDashboard, 
-  ClipboardEdit, 
-  Sliders, 
+  ClipboardPen, 
+  CalendarDays, 
+  SlidersHorizontal, 
   ShieldCheck, 
   Database,
   LogOut, 
   UserCheck, 
-  Download,
+  FileSpreadsheet,
   Menu,
   X,
   ChevronRight,
-  Sparkles,
   Globe
 } from 'lucide-react';
 
@@ -33,24 +33,24 @@ export default function Navbar({ activeTab, setActiveTab, onOpenExport }) {
   return (
     <>
       {/* Mobile Top Header Bar with Drawer Toggle */}
-      <div className="lg:hidden sticky top-0 z-50 glass-panel border-b border-slate-700/80 px-4 py-3 flex items-center justify-between shadow-xl">
-        <div className="flex items-center space-x-3">
-          <div className="p-2 bg-gradient-to-tr from-cyan-600 to-blue-600 rounded-xl shadow-md text-white">
-            <Droplet className="w-5 h-5 animate-pulse" />
+      <div className="lg:hidden sticky top-0 z-50 bg-[#0c2d48] border-b border-sky-900/60 px-4 py-3 flex items-center justify-between shadow-md">
+        <div className="flex items-center space-x-2.5">
+          <div className="p-2 bg-sky-500 text-white rounded-lg shadow-sm">
+            <Droplets className="w-5 h-5" />
           </div>
           <div>
             <span className="font-bold text-base text-white tracking-tight">{t('brandName', 'AquaTrack')}</span>
-            <span className="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">
+            <span className="ml-2 text-[11px] px-2 py-0.5 rounded-md bg-sky-900 text-sky-200 border border-sky-700 font-medium">
               {isAdmin ? t('adminConsole', 'Admin') : t('worker', 'Operator')}
             </span>
           </div>
         </div>
 
         <div className="flex items-center space-x-2">
-          {/* Quick Language Toggle on Mobile Header */}
+          {/* Language Toggle on Mobile */}
           <button
             onClick={() => setLang(lang === 'en' ? 'ta' : 'en')}
-            className="px-2.5 py-1.5 bg-cyan-950 border border-cyan-700 text-cyan-300 font-bold text-xs rounded-xl flex items-center space-x-1"
+            className="px-2.5 py-1.5 bg-sky-900 border border-sky-700 text-sky-200 font-bold text-xs rounded-lg flex items-center space-x-1"
             title="Switch Language / மொழி மாற்றவும்"
           >
             <Globe className="w-3.5 h-3.5" />
@@ -59,10 +59,10 @@ export default function Navbar({ activeTab, setActiveTab, onOpenExport }) {
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2.5 bg-slate-800 border border-slate-700 text-slate-200 hover:text-white rounded-xl focus:outline-none"
+            className="p-2 bg-sky-900/80 border border-sky-700 text-sky-100 hover:text-white rounded-lg focus:outline-none"
             aria-label="Toggle navigation menu"
           >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
@@ -70,57 +70,54 @@ export default function Navbar({ activeTab, setActiveTab, onOpenExport }) {
       {/* Overlay backdrop for mobile menu */}
       {mobileOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-xs lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
-      {/* Left Sidebar Navigation (Top to Bottom on Left Side) */}
+      {/* Left Sidebar Navigation */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-72 bg-slate-900/95 border-r border-slate-800/80 shadow-2xl flex flex-col justify-between transition-transform duration-300 ease-in-out ${
+        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-72 bg-[#0c2d48] border-r border-[#092237] shadow-xl flex flex-col justify-between transition-transform duration-200 ease-in-out ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        {/* Upper Portion: Logo, Branding & Main Nav */}
-        <div className="flex-1 flex flex-col overflow-y-auto px-4 py-6 space-y-6 custom-scrollbar">
+        {/* Upper Portion: Logo, Brand & Navigation Links */}
+        <div className="flex-1 flex flex-col overflow-y-auto px-4 py-5 space-y-6">
           
           {/* Top Brand Logo Banner */}
-          <div className="glass-panel p-4 rounded-2xl border border-cyan-500/20 shadow-lg space-y-3">
+          <div className="bg-[#082035] p-4 rounded-xl border border-sky-900/80 space-y-3">
             <div className="flex items-center space-x-3">
-              <div className="p-3 bg-gradient-to-tr from-cyan-600 to-blue-600 rounded-2xl shadow-lg shadow-cyan-500/30 text-white flex-shrink-0">
-                <Droplet className="w-7 h-7 animate-pulse" />
+              <div className="p-2.5 bg-sky-500 rounded-xl text-white shadow-md shadow-sky-500/20 flex-shrink-0">
+                <Droplets className="w-6 h-6" />
               </div>
               <div className="overflow-hidden">
-                <div className="flex items-center space-x-1.5">
-                  <h1 className="font-extrabold text-xl text-white tracking-tight">{t('brandName', 'AquaTrack')}</h1>
-                  <Sparkles className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-                </div>
-                <p className="text-[11px] text-cyan-300 font-semibold truncate">
+                <h1 className="font-extrabold text-lg text-white tracking-tight">{t('brandName', 'AquaTrack')}</h1>
+                <p className="text-[11px] text-sky-300 font-medium truncate">
                   {t('brandSub', 'Industrial Water Portal')}
                 </p>
               </div>
             </div>
 
-            {/* Language Switcher Control */}
-            <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between">
-              <span className="text-[11px] font-bold text-slate-400 flex items-center gap-1">
-                <Globe className="w-3.5 h-3.5 text-cyan-400" />
-                {t('selectLanguage', 'Language / மொழி')}:
+            {/* Language Switcher */}
+            <div className="pt-2.5 border-t border-sky-900/60 flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-sky-200/80 flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 text-sky-400" />
+                Language / மொழி:
               </span>
 
-              <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-bold">
+              <div className="flex bg-[#051624] p-0.5 rounded-lg border border-sky-900 text-[11px] font-semibold">
                 <button
                   onClick={() => setLang('en')}
-                  className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
-                    lang === 'en' ? 'bg-cyan-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  className={`px-2.5 py-0.5 rounded-md transition-all cursor-pointer ${
+                    lang === 'en' ? 'bg-sky-500 text-white shadow-xs' : 'text-sky-300 hover:text-white'
                   }`}
                 >
                   EN
                 </button>
                 <button
                   onClick={() => setLang('ta')}
-                  className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
-                    lang === 'ta' ? 'bg-cyan-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  className={`px-2.5 py-0.5 rounded-md transition-all cursor-pointer ${
+                    lang === 'ta' ? 'bg-sky-500 text-white shadow-xs' : 'text-sky-300 hover:text-white'
                   }`}
                 >
                   தமிழ்
@@ -128,177 +125,180 @@ export default function Navbar({ activeTab, setActiveTab, onOpenExport }) {
               </div>
             </div>
 
-            <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between font-mono">
-              <span>Mode:</span>
-              <span className="px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-800 font-bold uppercase">
+            <div className="pt-2 border-t border-sky-900/60 text-[11px] text-sky-300/80 flex items-center justify-between">
+              <span>Access Role:</span>
+              <span className="px-2 py-0.5 rounded-md bg-sky-950 text-sky-300 border border-sky-800 font-semibold text-[10px] uppercase">
                 {isAdmin ? t('adminConsole', 'Admin Console') : `${user?.assigned_areas?.[0] || 'Operator'}`}
               </span>
             </div>
           </div>
 
-          {/* Section Divider & Header */}
-          <div className="space-y-1">
-            <span className="px-3 text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
-              {t('workerNav', 'Worker Navigation')}
+          {/* Section Divider */}
+          <div className="space-y-0.5 px-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-sky-300/70">
+              {t('workerNav', 'System Navigation')}
             </span>
-            <p className="px-3 text-[10px] text-slate-400">
-              {t('navDesc', 'Select your task below')}
-            </p>
           </div>
 
           {/* Vertical Navigation Links */}
-          <nav className="space-y-2">
+          <nav className="space-y-1.5">
             
-            {/* Dashboard detail is STRICTLY shown to Admin only */}
+            {/* Dashboard for Admin / Viewer */}
             {isAdmin && (
               <button
                 onClick={() => handleNavClick('dashboard')}
-                className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-left font-bold transition-all group ${
+                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left font-medium transition-all group ${
                   activeTab === 'dashboard'
-                    ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-600/30 ring-1 ring-cyan-400/40'
-                    : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                    ? 'bg-sky-500 text-white shadow-md shadow-sky-900/40 font-semibold'
+                    : 'text-sky-100/90 hover:bg-[#082035] hover:text-white'
                 }`}
               >
-                <div className="flex items-center space-x-3.5">
-                  <div className={`p-2 rounded-xl ${activeTab === 'dashboard' ? 'bg-white/20 text-white' : 'bg-slate-800 text-cyan-400 group-hover:bg-slate-700'}`}>
-                    <LayoutDashboard className="w-5 h-5" />
+                <div className="flex items-center space-x-3">
+                  <div className={`p-1.5 rounded-lg ${activeTab === 'dashboard' ? 'bg-white/20 text-white' : 'bg-sky-950/60 text-sky-300'}`}>
+                    <LayoutDashboard className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="block text-sm">{t('liveDashboard', 'Live Dashboard')}</span>
-                    <span className={`block text-[10px] font-normal ${activeTab === 'dashboard' ? 'text-cyan-100' : 'text-slate-400'}`}>
+                    <span className="block text-xs font-semibold">{t('liveDashboard', 'Live Dashboard')}</span>
+                    <span className={`block text-[10px] ${activeTab === 'dashboard' ? 'text-sky-100' : 'text-sky-300/70'}`}>
                       {t('dashboardDesc', 'Overview & Water Analytics')}
                     </span>
                   </div>
                 </div>
-                <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === 'dashboard' ? 'translate-x-1 text-white' : 'text-slate-600 group-hover:text-slate-400'}`} />
+                <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === 'dashboard' ? 'text-white' : 'text-sky-400/50'}`} />
               </button>
             )}
 
-            {/* Area Entry Tab - Primary workspace for Operators and Admin */}
+            {/* Area Entry Tab - Primary workspace */}
             <button
               onClick={() => handleNavClick('entry')}
-              className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-left font-bold transition-all group ${
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left font-medium transition-all group ${
                 activeTab === 'entry'
-                  ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-600/30 ring-1 ring-cyan-400/40'
-                  : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                  ? 'bg-sky-500 text-white shadow-md shadow-sky-900/40 font-semibold'
+                  : 'text-sky-100/90 hover:bg-[#082035] hover:text-white'
               }`}
             >
-              <div className="flex items-center space-x-3.5">
-                <div className={`p-2 rounded-xl ${activeTab === 'entry' ? 'bg-white/20 text-white' : 'bg-slate-800 text-cyan-400 group-hover:bg-slate-700'}`}>
-                  <ClipboardEdit className="w-5 h-5" />
+              <div className="flex items-center space-x-3">
+                <div className={`p-1.5 rounded-lg ${activeTab === 'entry' ? 'bg-white/20 text-white' : 'bg-sky-950/60 text-sky-300'}`}>
+                  <ClipboardPen className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="block text-sm">{t('areaDataEntry', 'Area Data Entry')}</span>
-                  <span className={`block text-[10px] font-normal ${activeTab === 'entry' ? 'text-cyan-100' : 'text-slate-400'}`}>
+                  <span className="block text-xs font-semibold">{t('areaDataEntry', 'Area Data Entry')}</span>
+                  <span className={`block text-[10px] ${activeTab === 'entry' ? 'text-sky-100' : 'text-sky-300/70'}`}>
                     {t('areaEntryDesc', 'Enter & Update Meter Values')}
                   </span>
                 </div>
               </div>
-              <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === 'entry' ? 'translate-x-1 text-white' : 'text-slate-600 group-hover:text-slate-400'}`} />
+              <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === 'entry' ? 'text-white' : 'text-sky-400/50'}`} />
             </button>
 
-            {/* Past Records (PDF Uploaded Data) Tab */}
+            {/* Past Records (2026 Historical Logs) */}
             <button
               onClick={() => handleNavClick('records')}
-              className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-left font-bold transition-all group ${
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left font-medium transition-all group ${
                 activeTab === 'records'
-                  ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-600/30 ring-1 ring-cyan-400/40'
-                  : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                  ? 'bg-sky-500 text-white shadow-md shadow-sky-900/40 font-semibold'
+                  : 'text-sky-100/90 hover:bg-[#082035] hover:text-white'
               }`}
             >
-              <div className="flex items-center space-x-3.5">
-                <div className={`p-2 rounded-xl ${activeTab === 'records' ? 'bg-white/20 text-white' : 'bg-slate-800 text-cyan-400 group-hover:bg-slate-700'}`}>
-                  <Sliders className="w-5 h-5" />
+              <div className="flex items-center space-x-3">
+                <div className={`p-1.5 rounded-lg ${activeTab === 'records' ? 'bg-white/20 text-white' : 'bg-sky-950/60 text-sky-300'}`}>
+                  <CalendarDays className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="block text-sm">{t('pastRecords', 'Past Records')}</span>
-                  <span className={`block text-[10px] font-normal ${activeTab === 'records' ? 'text-cyan-100' : 'text-slate-400'}`}>
-                    {t('pastRecordsDesc', 'View 2026 PDF Historical Logs')}
+                  <span className="block text-xs font-semibold">{t('pastRecords', 'Past Records')}</span>
+                  <span className={`block text-[10px] ${activeTab === 'records' ? 'text-sky-100' : 'text-sky-300/70'}`}>
+                    {t('pastRecordsDesc', 'View 2026 Historical Logs')}
                   </span>
                 </div>
               </div>
-              <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === 'records' ? 'translate-x-1 text-white' : 'text-slate-600 group-hover:text-slate-400'}`} />
+              <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === 'records' ? 'text-white' : 'text-sky-400/50'}`} />
             </button>
 
-            {/* Admin Only Tools */}
+            {/* Admin Only Management Tools */}
             {isAdmin && (
               <>
+                <div className="pt-2 px-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-sky-300/70">
+                    Configuration & Admin
+                  </span>
+                </div>
+
                 <button
                   onClick={() => handleNavClick('meters')}
-                  className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-left font-bold transition-all group ${
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left font-medium transition-all group ${
                     activeTab === 'meters'
-                      ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-600/30 ring-1 ring-cyan-400/40'
-                      : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                      ? 'bg-sky-500 text-white shadow-md font-semibold'
+                      : 'text-sky-100/90 hover:bg-[#082035] hover:text-white'
                   }`}
                 >
-                  <div className="flex items-center space-x-3.5">
-                    <div className={`p-2 rounded-xl ${activeTab === 'meters' ? 'bg-white/20 text-white' : 'bg-slate-800 text-cyan-400 group-hover:bg-slate-700'}`}>
-                      <Sliders className="w-5 h-5" />
+                  <div className="flex items-center space-x-3">
+                    <div className={`p-1.5 rounded-lg ${activeTab === 'meters' ? 'bg-white/20 text-white' : 'bg-sky-950/60 text-sky-300'}`}>
+                      <SlidersHorizontal className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="block text-sm">{t('metersConfig', 'Meters Config')}</span>
-                      <span className={`block text-[10px] font-normal ${activeTab === 'meters' ? 'text-cyan-100' : 'text-slate-400'}`}>
+                      <span className="block text-xs font-semibold">{t('metersConfig', 'Meters Config')}</span>
+                      <span className={`block text-[10px] ${activeTab === 'meters' ? 'text-sky-100' : 'text-sky-300/70'}`}>
                         {t('metersConfigDesc', 'Configure Sub-meters & Lines')}
                       </span>
                     </div>
                   </div>
-                  <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === 'meters' ? 'translate-x-1 text-white' : 'text-slate-600 group-hover:text-slate-400'}`} />
+                  <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === 'meters' ? 'text-white' : 'text-sky-400/50'}`} />
                 </button>
 
                 <button
                   onClick={() => handleNavClick('security')}
-                  className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-left font-bold transition-all group ${
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left font-medium transition-all group ${
                     activeTab === 'security'
-                      ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-600/30 ring-1 ring-cyan-400/40'
-                      : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                      ? 'bg-sky-500 text-white shadow-md font-semibold'
+                      : 'text-sky-100/90 hover:bg-[#082035] hover:text-white'
                   }`}
                 >
-                  <div className="flex items-center space-x-3.5">
-                    <div className={`p-2 rounded-xl ${activeTab === 'security' ? 'bg-white/20 text-white' : 'bg-slate-800 text-cyan-400 group-hover:bg-slate-700'}`}>
-                      <Database className="w-5 h-5" />
+                  <div className="flex items-center space-x-3">
+                    <div className={`p-1.5 rounded-lg ${activeTab === 'security' ? 'bg-white/20 text-white' : 'bg-sky-950/60 text-sky-300'}`}>
+                      <Database className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="block text-sm">{t('dbSecurity', 'Database & Security')}</span>
-                      <span className={`block text-[10px] font-normal ${activeTab === 'security' ? 'text-cyan-100' : 'text-slate-400'}`}>
-                        {t('dbSecurityDesc', 'Backups, Health & Anti-Data-Loss')}
+                      <span className="block text-xs font-semibold">{t('dbSecurity', 'Database & Security')}</span>
+                      <span className={`block text-[10px] ${activeTab === 'security' ? 'text-sky-100' : 'text-sky-300/70'}`}>
+                        {t('dbSecurityDesc', 'Backups & Anti-Data-Loss')}
                       </span>
                     </div>
                   </div>
-                  <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === 'security' ? 'translate-x-1 text-white' : 'text-slate-600 group-hover:text-slate-400'}`} />
+                  <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === 'security' ? 'text-white' : 'text-sky-400/50'}`} />
                 </button>
 
                 <button
                   onClick={() => handleNavClick('audit')}
-                  className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-left font-bold transition-all group ${
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left font-medium transition-all group ${
                     activeTab === 'audit'
-                      ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-600/30 ring-1 ring-cyan-400/40'
-                      : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                      ? 'bg-sky-500 text-white shadow-md font-semibold'
+                      : 'text-sky-100/90 hover:bg-[#082035] hover:text-white'
                   }`}
                 >
-                  <div className="flex items-center space-x-3.5">
-                    <div className={`p-2 rounded-xl ${activeTab === 'audit' ? 'bg-white/20 text-white' : 'bg-slate-800 text-cyan-400 group-hover:bg-slate-700'}`}>
-                      <ShieldCheck className="w-5 h-5" />
+                  <div className="flex items-center space-x-3">
+                    <div className={`p-1.5 rounded-lg ${activeTab === 'audit' ? 'bg-white/20 text-white' : 'bg-sky-950/60 text-sky-300'}`}>
+                      <ShieldCheck className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="block text-sm">{t('auditTrail', 'Audit Trail')}</span>
-                      <span className={`block text-[10px] font-normal ${activeTab === 'audit' ? 'text-cyan-100' : 'text-slate-400'}`}>
+                      <span className="block text-xs font-semibold">{t('auditTrail', 'Audit Trail')}</span>
+                      <span className={`block text-[10px] ${activeTab === 'audit' ? 'text-sky-100' : 'text-sky-300/70'}`}>
                         {t('auditTrailDesc', 'System & Entry Change Logs')}
                       </span>
                     </div>
                   </div>
-                  <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === 'audit' ? 'translate-x-1 text-white' : 'text-slate-600 group-hover:text-slate-400'}`} />
+                  <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === 'audit' ? 'text-white' : 'text-sky-400/50'}`} />
                 </button>
 
                 {/* Excel Export Action Button */}
-                <div className="pt-4">
+                <div className="pt-2">
                   <button
                     onClick={() => {
                       onOpenExport();
                       setMobileOpen(false);
                     }}
-                    className="w-full flex items-center justify-center space-x-2 p-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-xl shadow-emerald-600/25 transition-all cursor-pointer border border-emerald-400/30"
+                    className="w-full flex items-center justify-center space-x-2 px-3.5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs shadow-md transition-all cursor-pointer"
                   >
-                    <Download className="w-5 h-5" />
+                    <FileSpreadsheet className="w-4 h-4" />
                     <span>{t('downloadExcel', 'Download Excel Ledger')}</span>
                   </button>
                 </div>
@@ -309,17 +309,17 @@ export default function Navbar({ activeTab, setActiveTab, onOpenExport }) {
         </div>
 
         {/* Lower Portion: User Profile Card & Sign Out Button */}
-        <div className="p-4 border-t border-slate-800 bg-slate-950/60 space-y-3">
-          <div className="glass-panel p-3.5 rounded-2xl border border-slate-800 flex items-center justify-between">
-            <div className="flex items-center space-x-3 overflow-hidden">
-              <div className="p-2.5 bg-slate-800 text-cyan-400 border border-slate-700 rounded-xl flex-shrink-0">
-                <UserCheck className="w-5 h-5" />
+        <div className="p-4 border-t border-[#092237] bg-[#082035] space-y-3">
+          <div className="p-3 rounded-xl bg-[#0c2d48] border border-sky-900/80 flex items-center justify-between">
+            <div className="flex items-center space-x-2.5 overflow-hidden">
+              <div className="p-2 bg-sky-900 text-sky-300 rounded-lg flex-shrink-0">
+                <UserCheck className="w-4 h-4" />
               </div>
               <div className="overflow-hidden">
-                <span className="block text-sm font-bold text-white truncate">
+                <span className="block text-xs font-bold text-white truncate">
                   {user?.name || 'Worker'}
                 </span>
-                <span className="block text-[10px] font-semibold text-cyan-400 uppercase tracking-wider truncate">
+                <span className="block text-[10px] font-medium text-sky-300 uppercase tracking-wider truncate">
                   {user?.role} {user?.role === 'Operator' && user?.assigned_areas?.length > 0 ? `(${user.assigned_areas[0]})` : ''}
                 </span>
               </div>
@@ -328,9 +328,9 @@ export default function Navbar({ activeTab, setActiveTab, onOpenExport }) {
 
           <button
             onClick={logout}
-            className="w-full flex items-center justify-center space-x-2 p-3 rounded-xl bg-slate-800/90 hover:bg-rose-950/80 text-slate-300 hover:text-rose-300 border border-slate-700 hover:border-rose-800 transition-all font-bold text-xs cursor-pointer"
+            className="w-full flex items-center justify-center space-x-2 py-2 rounded-lg bg-[#0c2d48] hover:bg-rose-900/50 text-sky-200 hover:text-rose-200 border border-sky-900 hover:border-rose-700 transition-all font-semibold text-xs cursor-pointer"
           >
-            <LogOut className="w-4 h-4 text-rose-400" />
+            <LogOut className="w-3.5 h-3.5" />
             <span>{t('signOut', 'Sign Out')}</span>
           </button>
         </div>

@@ -22,8 +22,7 @@ import {
   RefreshCw, 
   FileText,
   Clock,
-  KeyRound,
-  ShieldAlert
+  KeyRound
 } from 'lucide-react';
 
 export default function DatabaseSecurityModal() {
@@ -122,9 +121,9 @@ export default function DatabaseSecurityModal() {
 
   if (loading && !dbStatus) {
     return (
-      <div className="flex flex-col items-center justify-center p-12 space-y-4">
-        <RefreshCw className="w-8 h-8 text-cyan-400 animate-spin" />
-        <span className="text-slate-300 font-mono text-sm">Inspecting Database Security & Integrity...</span>
+      <div className="flex flex-col items-center justify-center p-12 space-y-3">
+        <RefreshCw className="w-8 h-8 text-sky-600 animate-spin" />
+        <span className="text-slate-600 font-medium text-sm">Inspecting Database Security & Integrity...</span>
       </div>
     );
   }
@@ -142,327 +141,214 @@ export default function DatabaseSecurityModal() {
     <div className="max-w-7xl mx-auto space-y-6">
       
       {/* Top Banner Header */}
-      <div className="glass-panel p-6 rounded-3xl border-l-4 border-cyan-500 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <div className="flex items-center space-x-3">
-            <div className="p-3 bg-gradient-to-tr from-cyan-600 to-blue-600 rounded-2xl shadow-lg shadow-cyan-500/30 text-white">
+      <div className="bg-white p-6 rounded-xl border border-slate-200 border-l-4 border-l-sky-600 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="space-y-0.5">
+          <div className="flex items-center space-x-2.5">
+            <div className="p-2.5 bg-sky-50 text-sky-600 border border-sky-100 rounded-xl">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-2xl font-black text-white tracking-tight">
-                {lang === 'ta' ? 'தரவுத்தளம் & பாதுகாப்பு மையம்' : 'Database Security & Protection Center'}
+              <h2 className="text-xl font-bold text-slate-900 tracking-tight">
+                {lang === 'ta' ? 'தரவுத்தளம் & பாதுகாப்பு மையம்' : 'Database Security & Safety Backups'}
               </h2>
-              <p className="text-xs text-slate-300">
+              <p className="text-xs text-slate-500">
                 {lang === 'ta' 
-                  ? 'தரவு இழப்பு தடுப்பு, WAL பயன்முறை, தானியங்கி காப்புப்பிரதிகள் மற்றும் பாதுகாப்பு பதிவுகள்' 
-                  : 'Anti-data-loss protection, WAL concurrency, point-in-time backups, and access defense.'}
+                  ? 'தரவு இழப்பு தடுப்பு, தானியங்கி காப்புப்பிரதிகள் மற்றும் பாதுகாப்பு பதிவுகள்' 
+                  : 'Anti-data-loss protection, WAL concurrency, automated backups, and access defense.'}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center space-x-3">
-          <button
-            onClick={fetchSecurityData}
-            disabled={loading}
-            className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition-all cursor-pointer"
-          >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            <span>{lang === 'ta' ? 'புதுப்பிக்கவும்' : 'Refresh Status'}</span>
-          </button>
-        </div>
+        <button
+          onClick={fetchSecurityData}
+          className="flex items-center space-x-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 transition-colors cursor-pointer"
+        >
+          <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+          <span>Refresh Status</span>
+        </button>
       </div>
 
-      {/* Live Feedback Alert Banner */}
+      {/* Feedback message */}
       {feedback.message && (
-        <div className={`p-4 rounded-2xl border flex items-center justify-between text-sm ${
+        <div className={`p-4 rounded-xl text-sm font-medium flex items-center space-x-2 border shadow-xs ${
           feedback.type === 'success' 
-            ? 'bg-emerald-950/80 border-emerald-500/50 text-emerald-200' 
-            : 'bg-rose-950/80 border-rose-500/50 text-rose-200'
+            ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
+            : 'bg-rose-50 border-rose-200 text-rose-800'
         }`}>
-          <div className="flex items-center space-x-3">
-            {feedback.type === 'success' ? (
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
-            ) : (
-              <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0" />
-            )}
-            <span className="font-semibold">{feedback.message}</span>
-          </div>
-          <button 
-            onClick={() => setFeedback({ type: '', message: '' })}
-            className="text-xs opacity-75 hover:opacity-100 font-bold ml-4"
-          >
-            ✕
-          </button>
+          {feedback.type === 'success' ? (
+            <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+          ) : (
+            <AlertTriangle className="w-5 h-5 text-rose-600 flex-shrink-0" />
+          )}
+          <span>{feedback.message}</span>
         </div>
       )}
 
-      {/* 4 Health & Security KPI Cards */}
+      {/* 4 Health & Protection Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
-        {/* Card 1: Database Integrity */}
-        <div className="glass-panel p-5 rounded-2xl border-l-4 border-emerald-500 space-y-3 shadow-lg">
+        {/* Card 1: Integrity Status */}
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-extrabold text-emerald-300 uppercase tracking-wider">
-              {lang === 'ta' ? 'தரவுத்தள ஒருமைப்பாடு' : 'Database Integrity'}
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Integrity Check</span>
+            <span className="p-1.5 rounded-lg bg-sky-50 text-sky-600">
+              <Activity className="w-4 h-4" />
             </span>
-            <Database className="w-5 h-5 text-emerald-400" />
           </div>
           <div>
-            <div className="text-2xl font-black text-white flex items-center gap-2">
+            <div className="text-2xl font-bold text-slate-900 flex items-center gap-1.5">
               {isHealthy ? (
-                <span className="text-emerald-400 flex items-center gap-1.5">
-                  <CheckCircle2 className="w-5 h-5" /> 100% HEALTHY
-                </span>
+                <>
+                  <CheckCircle2 className="w-6 h-6 text-emerald-600" />
+                  <span className="text-emerald-700">Healthy</span>
+                </>
               ) : (
-                <span className="text-rose-400 flex items-center gap-1.5">
-                  <AlertTriangle className="w-5 h-5" /> CHECK FAILED
-                </span>
+                <>
+                  <AlertTriangle className="w-6 h-6 text-rose-600" />
+                  <span className="text-rose-700">Warning</span>
+                </>
               )}
             </div>
-            <span className="text-xs text-slate-300 font-medium">
-              SQLite WAL Active • PRAGMA OK
-            </span>
-          </div>
-          <div className="text-[11px] text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-lg border border-emerald-800 font-mono">
-            Mode: {dbStatus?.stats?.journalMode?.toUpperCase() || 'WAL'}
+            <span className="text-xs text-slate-500 font-mono">Status: {dbStatus?.integrity?.status || 'OK'}</span>
           </div>
         </div>
 
-        {/* Card 2: Database Size & Records */}
-        <div className="glass-panel p-5 rounded-2xl border-l-4 border-cyan-500 space-y-3 shadow-lg">
+        {/* Card 2: Journal Mode */}
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-extrabold text-cyan-300 uppercase tracking-wider">
-              {lang === 'ta' ? 'சேமிப்பு & பதிவுகள்' : 'Storage & Records'}
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Storage Engine</span>
+            <span className="p-1.5 rounded-lg bg-blue-50 text-blue-600">
+              <Database className="w-4 h-4" />
             </span>
-            <HardDrive className="w-5 h-5 text-cyan-400" />
           </div>
           <div>
-            <div className="text-2xl font-black text-white font-mono">
-              {dbStatus?.stats?.fileSizeFormatted || '0.00 MB'}
+            <div className="text-2xl font-bold text-slate-900 font-mono">
+              {dbStatus?.journal_mode?.toUpperCase() || 'WAL'}
             </div>
-            <span className="text-xs text-slate-300 font-medium">
-              {dbStatus?.stats?.totalRecords || 0} {lang === 'ta' ? 'மொத்த வரிசைகள்' : 'Total DB Rows'}
-            </span>
-          </div>
-          <div className="text-[11px] text-cyan-300 bg-cyan-950/80 px-2.5 py-1 rounded-lg border border-cyan-800">
-            {dbStatus?.stats?.tables?.meters || 0} Meters • {dbStatus?.stats?.tables?.meter_readings || 0} Readings
+            <span className="text-xs text-slate-500">Write-Ahead Logging Active</span>
           </div>
         </div>
 
-        {/* Card 3: Backups Snapshot Count */}
-        <div className="glass-panel p-5 rounded-2xl border-l-4 border-purple-500 space-y-3 shadow-lg">
+        {/* Card 3: Database Size */}
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-extrabold text-purple-300 uppercase tracking-wider">
-              {lang === 'ta' ? 'காப்புப்பிரதிகள்' : 'Safety Snapshots'}
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Database Size</span>
+            <span className="p-1.5 rounded-lg bg-indigo-50 text-indigo-600">
+              <HardDrive className="w-4 h-4" />
             </span>
-            <Activity className="w-5 h-5 text-purple-400" />
           </div>
           <div>
-            <div className="text-2xl font-black text-white font-mono">
-              {backups.length} <span className="text-sm font-bold text-purple-300">Saved</span>
+            <div className="text-2xl font-bold text-indigo-700 font-mono">
+              {dbStatus?.database_size_formatted || '0 KB'}
             </div>
-            <span className="text-xs text-slate-300 font-medium">
-              {lang === 'ta' ? 'தானியங்கி சுழற்சி (30 தக்கவைப்பு)' : 'Auto-pruned (Last 30 kept)'}
-            </span>
-          </div>
-          <div className="text-[11px] text-purple-300 bg-purple-950/80 px-2.5 py-1 rounded-lg border border-purple-800">
-            Schedule: Every 12h + Startup
+            <span className="text-xs text-slate-500 font-mono">Tables: {dbStatus?.tables?.length || 8}</span>
           </div>
         </div>
 
-        {/* Card 4: Access Defense */}
-        <div className="glass-panel p-5 rounded-2xl border-l-4 border-amber-500 space-y-3 shadow-lg">
+        {/* Card 4: Backup Count */}
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-extrabold text-amber-300 uppercase tracking-wider">
-              {lang === 'ta' ? 'அணுகல் கட்டுப்பாடு' : 'Access Defense'}
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Stored Snapshots</span>
+            <span className="p-1.5 rounded-lg bg-teal-50 text-teal-600">
+              <ShieldCheck className="w-4 h-4" />
             </span>
-            <Lock className="w-5 h-5 text-amber-400" />
           </div>
           <div>
-            <div className="text-2xl font-black text-emerald-400 flex items-center gap-1.5">
-              <CheckCircle2 className="w-5 h-5" /> PROTECTED
+            <div className="text-2xl font-bold text-teal-700 font-mono">
+              {backups.length} <span className="text-xs font-semibold text-slate-500 font-sans">Backups</span>
             </div>
-            <span className="text-xs text-slate-300 font-medium">
-              Rate Limiter • RBAC Zone Lock
-            </span>
-          </div>
-          <div className="text-[11px] text-amber-300 bg-amber-950/80 px-2.5 py-1 rounded-lg border border-amber-800">
-            Brute-Force & DoS Shield Active
+            <span className="text-xs text-slate-500">Point-in-Time Restore Ready</span>
           </div>
         </div>
 
       </div>
 
-      {/* 1-Click Backup Trigger Area */}
-      <div className="glass-panel p-6 rounded-3xl border border-cyan-500/30 shadow-xl space-y-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      {/* Manual Backup Action Banner */}
+      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div>
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <Plus className="w-5 h-5 text-cyan-400" />
-              {lang === 'ta' ? 'உடனடி தரவுத்தள காப்புப்பிரதி எடுக்கவும்' : 'Take Immediate Point-in-Time Backup'}
-            </h3>
-            <p className="text-xs text-slate-400">
-              {lang === 'ta' 
-                ? 'ஒரு நொடியில் முழுமையான SQLite ஸ்னாப்ஷாட்டை உருவாக்கி பாதுகாப்பாக சேமிக்கவும்.' 
-                : 'Creates a clean, zero-lock SQLite atomic snapshot and stores it in server/backups/.'}
-            </p>
+            <h3 className="font-bold text-slate-800 text-sm">Trigger Manual Backup Snapshot</h3>
+            <p className="text-xs text-slate-500">Create an instant verifiable database copy before making major updates</p>
           </div>
+        </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <input
-              type="text"
-              value={backupReason}
-              onChange={(e) => setBackupReason(e.target.value)}
-              placeholder="Backup label / reason..."
-              className="px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-100 text-xs focus:ring-2 focus:ring-cyan-500 focus:outline-none w-full sm:w-64"
-            />
-            <button
-              onClick={handleCreateBackup}
-              disabled={creatingBackup}
-              className="flex items-center justify-center space-x-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs shadow-lg shadow-cyan-600/30 transition-all cursor-pointer whitespace-nowrap border border-cyan-400/40"
-            >
-              {creatingBackup ? (
-                <>
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>{lang === 'ta' ? 'சேமிக்கிறது...' : 'Backing up...'}</span>
-                </>
-              ) : (
-                <>
-                  <Download className="w-4 h-4" />
-                  <span>{lang === 'ta' ? 'இப்போது காப்புப்பிரதி எடு' : 'Create Backup Now'}</span>
-                </>
-              )}
-            </button>
-          </div>
+        <div className="flex flex-col sm:flex-row items-center gap-3">
+          <input
+            type="text"
+            value={backupReason}
+            onChange={(e) => setBackupReason(e.target.value)}
+            placeholder="Reason for backup (e.g., Pre-Shift Data Revision)"
+            className="w-full sm:flex-1 bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-slate-900 text-xs font-medium focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:outline-none"
+          />
+          <button
+            onClick={handleCreateBackup}
+            disabled={creatingBackup}
+            className="w-full sm:w-auto px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors cursor-pointer disabled:opacity-50 flex items-center justify-center space-x-2 whitespace-nowrap"
+          >
+            <Plus className="w-4 h-4" />
+            <span>{creatingBackup ? 'Creating Backup...' : 'Create Backup Snapshot'}</span>
+          </button>
         </div>
       </div>
 
-      {/* Main Grid: Backups Ledger & Security Event Stream */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* Backups Table (2/3 width) */}
-        <div className="lg:col-span-2 glass-panel p-6 rounded-3xl space-y-4 shadow-xl">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Database className="w-5 h-5 text-cyan-400" />
-              <h3 className="font-bold text-white text-base">
-                {lang === 'ta' ? 'காப்புப்பிரதி கோப்புகள் பட்டியல்' : 'Available Database Snapshots'}
-              </h3>
-            </div>
-            <span className="text-xs text-slate-400 font-mono">
-              {backups.length} {lang === 'ta' ? 'கோப்புகள் உள்ளன' : 'snapshots stored'}
-            </span>
-          </div>
+      {/* Backups List Table */}
+      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+        <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+          <h3 className="font-bold text-slate-800 text-sm">Available Backup Snapshots</h3>
+          <span className="text-xs text-slate-500 font-mono">{backups.length} snapshots on disk</span>
+        </div>
 
-          <div className="overflow-x-auto border border-slate-800 rounded-2xl">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900/90 text-slate-300 font-bold border-b border-slate-800">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs text-slate-700">
+            <thead className="bg-sky-50/70 border-b border-sky-100 text-sky-900 uppercase font-semibold">
+              <tr>
+                <th className="py-3 px-4">Backup Filename</th>
+                <th className="py-3 px-4">Created Timestamp</th>
+                <th className="py-3 px-4">File Size</th>
+                <th className="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 font-mono">
+              {backups.length === 0 ? (
                 <tr>
-                  <th className="p-3.5">{lang === 'ta' ? 'கோப்பு பெயர்' : 'Backup File'}</th>
-                  <th className="p-3.5">{lang === 'ta' ? 'அளவு' : 'Size'}</th>
-                  <th className="p-3.5">{lang === 'ta' ? 'உருவாக்கப்பட்ட நேரம்' : 'Timestamp'}</th>
-                  <th className="p-3.5 text-right">{lang === 'ta' ? 'செயல்கள்' : 'Actions'}</th>
+                  <td colSpan={4} className="p-8 text-center text-slate-500 font-sans">
+                    No backups found. Click Create Backup above to create one.
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800/60 font-mono">
-                {backups.length === 0 ? (
-                  <tr>
-                    <td colSpan="4" className="p-8 text-center text-slate-500">
-                      No backups generated yet. Click "Create Backup Now" above.
+              ) : (
+                backups.map(b => (
+                  <tr key={b.filename} className="hover:bg-slate-50 transition-colors">
+                    <td className="py-3 px-4 font-bold text-slate-900">{b.filename}</td>
+                    <td className="py-3 px-4 text-slate-500">
+                      {new Date(b.created_at).toLocaleString()}
+                    </td>
+                    <td className="py-3 px-4 text-sky-700 font-semibold">{b.sizeFormatted}</td>
+                    <td className="py-3 px-4 text-right space-x-2 font-sans">
+                      <button
+                        onClick={() => handleDownloadBackup(b.filename)}
+                        className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md border border-slate-200 text-xs font-semibold cursor-pointer transition-colors inline-flex items-center space-x-1"
+                        title="Download backup file"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download</span>
+                      </button>
+                      <button
+                        onClick={() => handleRestoreBackup(b.filename)}
+                        disabled={restoringFilename === b.filename}
+                        className="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-md text-xs font-semibold cursor-pointer transition-colors inline-flex items-center space-x-1"
+                        title="Restore database from this snapshot"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5" />
+                        <span>{restoringFilename === b.filename ? 'Restoring...' : 'Restore'}</span>
+                      </button>
                     </td>
                   </tr>
-                ) : (
-                  backups.map((b) => (
-                    <tr key={b.filename} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="p-3.5 font-bold text-slate-200 flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-                        <span className="truncate max-w-xs" title={b.filename}>{b.filename}</span>
-                      </td>
-                      <td className="p-3.5 text-cyan-300 font-semibold">{b.sizeFormatted}</td>
-                      <td className="p-3.5 text-slate-400 text-[11px]">
-                        {new Date(b.createdAt).toLocaleString()}
-                      </td>
-                      <td className="p-3.5 text-right space-x-2">
-                        <button
-                          onClick={() => handleDownloadBackup(b.filename)}
-                          className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-[11px] font-bold inline-flex items-center gap-1 cursor-pointer transition-all"
-                          title="Download database snapshot to local disk"
-                        >
-                          <Download className="w-3.5 h-3.5" />
-                          <span>{lang === 'ta' ? 'பதிவிறக்கு' : 'Download'}</span>
-                        </button>
-                        <button
-                          onClick={() => handleRestoreBackup(b.filename)}
-                          disabled={restoringFilename === b.filename}
-                          className="px-2.5 py-1.5 rounded-lg bg-amber-950/80 hover:bg-amber-900 text-amber-300 border border-amber-700 text-[11px] font-bold inline-flex items-center gap-1 cursor-pointer transition-all"
-                          title="Restore database to this point-in-time state"
-                        >
-                          <RotateCcw className={`w-3.5 h-3.5 ${restoringFilename === b.filename ? 'animate-spin' : ''}`} />
-                          <span>{lang === 'ta' ? 'மீட்டமை' : 'Restore'}</span>
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
-
-        {/* Security & Audit Feed (1/3 width) */}
-        <div className="glass-panel p-6 rounded-3xl space-y-4 shadow-xl">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <ShieldAlert className="w-5 h-5 text-amber-400" />
-              <h3 className="font-bold text-white text-base">
-                {lang === 'ta' ? 'பாதுகாப்பு & அணுகல் பதிவுகள்' : 'Security & Access Logs'}
-              </h3>
-            </div>
-          </div>
-
-          <div className="space-y-2.5 max-h-96 overflow-y-auto pr-1 custom-scrollbar">
-            {securityLogs.length === 0 ? (
-              <div className="p-6 text-center text-slate-500 text-xs">
-                No security alerts logged. System is operating normally.
-              </div>
-            ) : (
-              securityLogs.map((log) => {
-                const isAlert = log.action.includes('FAILED') || log.action.includes('UNAUTHORIZED');
-                return (
-                  <div
-                    key={log.id}
-                    className={`p-3 rounded-xl border text-xs space-y-1 ${
-                      isAlert 
-                        ? 'bg-rose-950/40 border-rose-800/60 text-rose-200' 
-                        : 'bg-slate-900/80 border-slate-800 text-slate-300'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between font-bold">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${
-                        isAlert ? 'bg-rose-900 text-rose-200' : 'bg-cyan-950 text-cyan-300'
-                      }`}>
-                        {log.action}
-                      </span>
-                      <span className="text-[10px] text-slate-500">
-                        {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                    </div>
-                    <div className="text-[11px] font-semibold text-white">
-                      User: <span className="font-mono text-cyan-300">{log.username}</span>
-                    </div>
-                    {log.notes && (
-                      <p className="text-[10px] text-slate-400 line-clamp-2">
-                        {log.notes}
-                      </p>
-                    )}
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-
       </div>
 
     </div>
